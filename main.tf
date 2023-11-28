@@ -7,6 +7,12 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 
+locals {
+  team = "api_mgmt_dev"
+  application = "corp_api"
+  server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
+}
+
 #Define the VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
@@ -139,6 +145,20 @@ resource "aws_instance" "web_server" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
   tags = {
-    Name = "Ubuntu EC2 Server"
+    Name = local.server_name
+    Owner = local.team
+    App = local.application
+  }
+}
+
+resource "aws_subnet" "variables-subnet" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.variables_sub_cidr
+  availability_zone       = var.variables_sub_az
+  map_public_ip_on_launch = var.variables_sub_auto_ip
+
+  tags = {
+    Name      = "sub-variables-${var.variables_sub_az}"
+    Terraform = "true"
   }
 }
