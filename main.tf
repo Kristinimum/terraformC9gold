@@ -142,15 +142,3 @@ resource "aws_instance" "web_server" {
     Name = "Ubuntu EC2 Server"
   }
 }
-
-resource "aws_instance" "web" {
-  ami           = "ami-0fc5d935ebf8bc3bc"
-  instance_type = "t2.micro"
-
-  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id
-  vpc_security_group_ids = ["sg-074f46043c3d1bcfa"]
-
-  tags = {
-    "Terrafrom" = "true"
-  }
-}
