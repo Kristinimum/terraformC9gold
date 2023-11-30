@@ -8,7 +8,7 @@ data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 
 locals {
-  team = "api_mgmt_dev"
+  team        = "api_mgmt_dev"
   application = "corp_api"
   server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
 }
@@ -145,9 +145,9 @@ resource "aws_instance" "web_server" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
   tags = {
-    Name = local.server_name
+    Name  = local.server_name
     Owner = local.team
-    App = local.application
+    App   = local.application
   }
 }
 
