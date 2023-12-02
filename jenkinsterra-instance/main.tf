@@ -62,6 +62,7 @@ resource "aws_s3_bucket" "jenkinsbucket" {
     Name        = "Grin-bucket"
   }
 }
+
 #basic example of S3 bucket ACL policy private bucket
 resource "aws_s3_bucket" "jenkinsbucketpolicy" {
   bucket = "my-tf-jenkins-bucket-grinny-ninny-9879"
@@ -76,6 +77,6 @@ resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
 
 resource "aws_s3_bucket_acl" "jenkinsbucket-private" {
   depends_on = [aws_s3_bucket_ownership_controls.jenkinsbucketpolicyrule]
-  bucket = aws_s3_bucket.jenkinsbucket.id
-  acl    = "private"
+  bucket     = aws_s3_bucket.jenkinsbucket.id
+  acl        = "private"
 }
