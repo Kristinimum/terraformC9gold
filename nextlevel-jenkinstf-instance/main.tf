@@ -1,20 +1,7 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
-}
-
-resource "aws_instance" "jenkinsinstance-test" {
-  ami                    = "ami-0230bd60aa48260c6"
-  instance_type          = "t2.micro"
-  key_name               = "jenkins-kp"
+resource "aws_instance" "jenkinsinstance" {
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.jenkinstest-sg.id]
   user_data              = file("install_jenkins.sh")
   tags = {
@@ -25,7 +12,7 @@ resource "aws_instance" "jenkinsinstance-test" {
 resource "aws_security_group" "jenkinstest-sg" {
   name        = "jenkinstest-sg"
   description = "allow inbound traffic 22, 8080"
-  vpc_id      = "vpc-0ec51f31ec9b16cf1"
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "ssh access p22"
@@ -62,14 +49,13 @@ resource "aws_s3_bucket" "jenkinsbucket" {
     Name        = "Grin-bucket"
   }
 }
-
 #basic example of S3 bucket ACL policy private bucket
 resource "aws_s3_bucket" "jenkinsbucketpolicy" {
-  bucket = "my-tf-jenkins-bucket-grinny-ninny-9879"
+  bucket = var.bucket
 }
 
 resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
-  bucket = aws_s3_bucket.jenkinsbucket.id
+  bucket = var.acl_on_bucket
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
@@ -77,6 +63,6 @@ resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
 
 resource "aws_s3_bucket_acl" "jenkinsbucket-private" {
   depends_on = [aws_s3_bucket_ownership_controls.jenkinsbucketpolicyrule]
-  bucket     = aws_s3_bucket.jenkinsbucket.id
-  acl        = "private"
+  bucket = aws_s3_bucket.jenkinsbucket.id
+  acl    = "private"
 }
