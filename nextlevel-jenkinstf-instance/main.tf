@@ -12,14 +12,13 @@ resource "aws_instance" "jenkinsinstance" {
 resource "aws_security_group" "jenkinstest-sg" {
   name        = "jenkinstest-sg"
   description = "allow inbound traffic 22, 8080"
-  vpc_id      = var.vpc_id
 
   ingress {
     description = "ssh access p22"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["216.47.59.69/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -43,10 +42,10 @@ resource "aws_security_group" "jenkinstest-sg" {
 }
 
 resource "aws_s3_bucket" "jenkinsbucket" {
-  bucket = "my-tf-jenkins-bucket-grinny-ninny-9879"
+  bucket = var.bucket
 
   tags = {
-    Name        = "Grin-bucket"
+    Name = "Grin-bucket"
   }
 }
 #basic example of S3 bucket ACL policy private bucket
@@ -55,7 +54,7 @@ resource "aws_s3_bucket" "jenkinsbucketpolicy" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
-  bucket = var.acl_on_bucket
+  bucket = aws_s3_bucket.jenkinsbucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
@@ -63,6 +62,6 @@ resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
 
 resource "aws_s3_bucket_acl" "jenkinsbucket-private" {
   depends_on = [aws_s3_bucket_ownership_controls.jenkinsbucketpolicyrule]
-  bucket = aws_s3_bucket.jenkinsbucket.id
-  acl    = "private"
+  bucket     = aws_s3_bucket.jenkinsbucket.id
+  acl        = var.acl
 }
