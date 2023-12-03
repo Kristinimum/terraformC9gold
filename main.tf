@@ -302,3 +302,8 @@ resource "aws_instance" "another_web_server" {
     ignore_changes = [security_groups]
   }
 }
+
+resource "aws_instance" "aws_linux" {
+  instance_type = "t2.micro"
+  ami           = "ami-0fa1ca9559f1892ec"
+}
