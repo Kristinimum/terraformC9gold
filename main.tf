@@ -194,7 +194,7 @@ resource "local_file" "private_key_pem" {
 }
 
 resource "aws_key_pair" "generated" {
-  key_name   = "MyAWSKey"
+  key_name   = "MyAWSKey2"
   public_key = tls_private_key.generated.public_key_openssh
   lifecycle {
     ignore_changes = [key_name]
@@ -269,41 +269,42 @@ resource "aws_security_group" "vpc-ping" {
   }
 }
 
-# Terraform Resource Block - To Build Web Server in Public Subnet
-resource "aws_instance" "another_web_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
-  security_groups = [aws_security_group.vpc-ping.id,
-  aws_security_group.ingress-ssh.id, aws_security_group.vpc-web.id]
-  associate_public_ip_address = true
-  key_name                    = aws_key_pair.generated.key_name
-  connection {
-    user        = "ubuntu"
-    private_key = tls_private_key.generated.private_key_pem
-    host        = self.public_ip
-  }
-
-  # Leave the first part of the block unchanged and create our `local-exec provisioner
-  provisioner "local-exec" {
-    command = "chmod 600 ${local_file.private_key_pem.filename}"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo rm -rf /tmp",
-      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
-      "sudo sh /tmp/assets/setup-web.sh",
-    ]
-  }
-  tags = {
-    Name = "another Web EC2 Server"
-  }
-  lifecycle {
-    ignore_changes = [security_groups]
-  }
-}
 
 resource "aws_instance" "aws_linux" {
   instance_type = "t2.micro"
   ami           = "ami-0fa1ca9559f1892ec"
+}
+
+module "server" {
+  source    = "./modules/server"
+  ami       = data.aws_ami.ubuntu.id
+  subnet_id = aws_subnet.public_subnets["public_subnet_3"].id
+  security_groups = [
+    aws_security_group.vpc-ping.id,
+    aws_security_group.ingress-ssh.id,
+    aws_security_group.vpc-web.id
+  ]
+}
+output "public_ip" {
+  value = module.server.public_ip
+}
+output "public_dns" {
+  value = module.server.public_dns
+}
+
+module "server_subnet_1" {
+  source    = "./modules/server"
+  ami       = data.aws_ami.ubuntu.id
+  subnet_id = aws_subnet.public_subnets["public_subnet_1"].id
+  security_groups = [
+    aws_security_group.vpc-ping.id,
+    aws_security_group.ingress-ssh.id,
+    aws_security_group.vpc-web.id
+  ]
+}
+output "public_ip_server_subnet_1" {
+  value = module.server_subnet_1.public_ip
+}
+output "public_dns_server_subnet_1" {
+  value = module.server_subnet_1.public_dns
 }
