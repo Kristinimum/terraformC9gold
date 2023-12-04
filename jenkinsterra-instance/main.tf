@@ -59,7 +59,7 @@ resource "aws_s3_bucket" "jenkinsbucket" {
   bucket = "my-tf-jenkins-bucket-grinny-ninny-9879"
 
   tags = {
-    Name        = "Grin-bucket"
+    Name = "Grin-bucket"
   }
 }
 
