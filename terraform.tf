@@ -1,11 +1,10 @@
 terraform {
-  backend "http" {
-    address        = "http://localhost:5000/terraform_state/my_state"
-    lock_address   = "http://localhost:5000/terraform_lock/my_state"
-    lock_method    = "PUT"
-    unlock_address = "http://localhost:5000/terraform_lock/my_state"
-    unlock_method  = "DELETE"
+  backend "s3" {
+    bucket = "kristinimumsbucket64tform"
+    key    = "prod/aws_infra"
+    aws_region = "us-east-1"
   }
+
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
