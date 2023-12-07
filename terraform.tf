@@ -1,6 +1,12 @@
 terraform {
-  backend "local" {
-    path = "terraform.tfstate"
+  backend "s3" {
+    bucket = "kristinimumsbucket64tform"
+    key    = "prod/aws_infra"
+    region = "us-east-1"
+
+    # Replace this with your DynamoDB table name!
+    dynamodb_table = "tform-locks"
+    encrypt        = true
   }
 
   required_version = ">= 1.0.0"
