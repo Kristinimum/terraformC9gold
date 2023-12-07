@@ -320,7 +320,7 @@ output "public_dns_server_subnet_1" {
 # Terraform Resource Block - To Build EC2 instance in Public Subnet
 resource "aws_instance" "web_server_2" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.small"
+  instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnets["public_subnet_2"].id
   tags = {
     Name = "Web EC2 Server"
