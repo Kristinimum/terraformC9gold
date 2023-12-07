@@ -1,14 +1,11 @@
 terraform {
-  backend "s3" {
-    bucket = "kristinimumsbucket64tform"
-    key    = "prod/aws_infra"
-    region = "us-east-1"
-
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "tform-locks"
-    encrypt        = true
+  backend "http" {
+    address        = "http://localhost:5000/terraform_state/my_state"
+    lock_address   = "http://localhost:5000/terraform_lock/my_state"
+    lock_method    = "PUT"
+    unlock_address = "http://localhost:5000/terraform_lock/my_state"
+    unlock_method  = "DELETE"
   }
-
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
