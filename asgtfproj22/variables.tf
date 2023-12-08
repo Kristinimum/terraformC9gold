@@ -28,10 +28,16 @@ variable "key_name" {
 
 variable "availability_zones" {
   type    = list(string)
-  default = (["us-east-1a", "us-east-1d"])
+  default = ["subnet-0b97291fdb758daf0", "subnet-0df7d2a82b8f53292"]
 }
 
 variable "vpc_id" {
   type    = string
   default = "vpc-0ec51f31ec9b16cf1"
+}
+
+variable "bucket" {
+    description = "s3 bucket"
+    type = string
+    default = "woofers_treat_bucket_2023"
 }

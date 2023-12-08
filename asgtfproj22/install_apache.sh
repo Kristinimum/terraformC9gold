@@ -1,6 +1,6 @@
-#!/bin/bash
-yum update -y
-yum install -y httpd.x86_64
-systemctl start httpd.service
-systemctl enable httpd.service
-echo "Keep those tails wagging with Woofers & Pupcakes this holiday season! $(hostname -f)" > /var/www/html/index.html
+#! /bin/bash
+sudo apt-get update
+sudo apt-get install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "The page was created by the user data" | sudo tee /var/www/html/index.html
