@@ -4,7 +4,7 @@ resource "aws_launch_template" "apache_template" {
   image_id               = var.ami_id
   instance_type          = var.instance_type
   key_name               = var.key_name
-  user_data              = filebase64("${path.module}/install_apache.sh")
+  user_data              = filebase64("${path.root}/install_apache.sh")
   vpc_security_group_ids = [aws_security_group.woofers_sg.id]
   tags = {
     Name = var.name
