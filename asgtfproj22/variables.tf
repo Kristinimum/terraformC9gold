@@ -37,7 +37,7 @@ variable "vpc_id" {
 }
 
 variable "bucket" {
-    description = "s3 bucket"
-    type = string
-    default = "woofers_treat_bucket_2023"
+  description = "s3 bucket"
+  type        = string
+  default     = "woofers-treat-bucket-2023"
 }
