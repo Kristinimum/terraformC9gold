@@ -28,7 +28,7 @@ variable "key_name" {
 
 variable "availability_zones" {
   type    = list(string)
-  default = (["us-east-1c", "us-east-1d"])
+  default = (["us-east-1a", "us-east-1d"])
 }
 
 variable "vpc_id" {
