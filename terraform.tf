@@ -1,10 +1,10 @@
 terraform {
-  backend "s3" {
-    bucket         = "kristinimumsbucket64tform"
-    key            = "prod/aws_infra"
-    region         = "us-east-1"
-    dynamodb_table = "tform-locks"
-    encrypt        = true
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "grinnyninnytformcloud"
+    workspaces {
+      name = "my-aws-app"
+    }
   }
 
 
