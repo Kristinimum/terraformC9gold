@@ -1,9 +1,12 @@
 terraform {
   backend "s3" {
-    bucket = "kristinimumsbucket64tform"
-    key    = "prod/aws_infra"
-    aws_region = "us-east-1"
+    bucket         = "kristinimumsbucket64tform"
+    key            = "prod/aws_infra"
+    region         = "us-east-1"
+    dynamodb_table = "tform-locks"
+    encrypt        = true
   }
+
 
   required_version = ">= 1.0.0"
   required_providers {
