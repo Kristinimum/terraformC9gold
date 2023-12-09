@@ -1,4 +1,10 @@
 terraform {
+  backend "s3" {
+    bucket = "kristinimumsbucket64tform"
+    key    = "prod/aws_infra"
+    region = "us-east-1"
+  }
+
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
