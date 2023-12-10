@@ -303,9 +303,7 @@ module "server" {
     aws_security_group.vpc-web.id
   ]
 }
-output "public_ip" {
-  value = module.server.public_ip
-}
+
 
 output "size" {
   value = module.server.size
