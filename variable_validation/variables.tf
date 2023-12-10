@@ -1,3 +1,14 @@
+terraform {
+  backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "grinnyninnytformcloud"
+    workspaces {
+      name = "variable_validation"
+    }
+  }
+}
+
+
 variable "cloud" {
   type = string
   validation {
@@ -56,8 +67,8 @@ output "cost_code" {
   value = local.contact_info.cost_code
 }
 output "phone_number" {
-sensitive = true
-  value = local.contact_info.phone_number
+  sensitive = true
+  value     = local.contact_info.phone_number
 }
 output "my_number" {
   value = local.my_number
