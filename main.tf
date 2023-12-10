@@ -13,6 +13,24 @@ locals {
   server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
 }
 
+locals {
+  service_name = "Automation"
+  app_team     = "Cloud Team"
+  createdby    = "terraform"
+}
+
+locals {
+  # Common tags to be assigned to all resources
+  common_tags = {
+    Name      = local.server_name
+    Owner     = local.team
+    App       = local.application
+    Service   = local.service_name
+    AppTeam   = local.app_team
+    CreatedBy = local.createdby
+  }
+}
+
 #Define the VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
@@ -166,9 +184,8 @@ resource "aws_instance" "web_server" {
     ]
   }
 
-  tags = {
-    Name = "Ubuntu EC2 Server"
-  }
+  tags = local.common_tags
+
   lifecycle {
     ignore_changes = [security_groups]
   }
@@ -286,9 +303,7 @@ module "server" {
     aws_security_group.vpc-web.id
   ]
 }
-output "public_ip" {
-  value = module.server.public_ip
-}
+
 
 output "size" {
   value = module.server.size
