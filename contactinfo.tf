@@ -8,11 +8,7 @@ variable "last_name" {
   sensitive = true
   default   = "Tom"
 }
-variable "phone_number" {
-  type      = string
-  sensitive = true
-  default   = "867-5309"
-}
+
 locals {
   contact_info = {
     first_name   = var.first_name
