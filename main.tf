@@ -22,7 +22,7 @@ locals {
 locals {
   # Common tags to be assigned to all resources
   common_tags = {
-    Name      = local.server_name
+    Name      = lower(local.server_name)
     Owner     = local.team
     App       = local.application
     Service   = local.service_name
@@ -30,6 +30,18 @@ locals {
     CreatedBy = local.createdby
   }
 }
+
+locals {
+  maximum = max(var.num_1, var.num_2, var.num_3)
+  minimum = min(var.num_1, var.num_2, var.num_3, 44, 20)
+}
+output "max_value" {
+  value = local.maximum
+}
+output "min_value" {
+  value = local.minimum
+}
+
 
 data "aws_s3_bucket" "data_bucket" {
   bucket = "my-data-lookup-bucket-kmm"
@@ -68,7 +80,7 @@ resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
   tags = {
-    Name        = var.vpc_name
+    Name        = upper(var.vpc_name)
     Environment = "stage"
     Terraform   = "true"
   }
