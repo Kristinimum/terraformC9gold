@@ -410,7 +410,7 @@ resource "aws_security_group" "main" {
 
   lifecycle {
     create_before_destroy = true
-    prevent_destroy       = true
+    #prevent_destroy       = true #if not commented out, won't let you run destroy command
   }
 
 }
