@@ -81,7 +81,7 @@ resource "aws_vpc" "vpc" {
 
   tags = {
     Name        = upper(var.vpc_name)
-    Environment = "stage"
+    Environment = var.environment
     Terraform   = "true"
   }
 }
