@@ -35,3 +35,55 @@ resource "aws_security_group" "sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+#db security group
+resource "aws_security_group" "database_sg" {
+  name        = "database_sg"
+  description = "allow inbound traffic from ALB"
+  vpc_id      = aws_vpc.custom-vpc.id
+
+  #allow traffic from ALB
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.sg.id]
+  }
+
+  egress {
+    from_port   = 32768
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "database_sg"
+  }
+}
+
+#web tier security group
+resource "aws_security_group" "webtier_sg" {
+  name        = "webtier_sg"
+  description = "allow inbound traffic from ALB"
+  vpc_id      = aws_vpc.custom-vpc.id
+
+  #allow traffic from ALB
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.sg.id]
+  }
+
+  egress {
+    from_port   = "0"
+    to_port     = "0"
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "webtier_sg"
+  }
+}

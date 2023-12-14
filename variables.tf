@@ -131,3 +131,9 @@ variable "web_ingress" {
     }
   }
 }
+
+variable "environment" {
+type = string
+description = "Infrastructure environment. eg. dev, prod, etc"
+default = "test"
+}

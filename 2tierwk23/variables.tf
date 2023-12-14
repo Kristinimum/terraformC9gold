@@ -48,3 +48,15 @@ variable "private_subnet2_cidr" {
   type    = string
   default = "10.0.4.0/24"
 }
+
+variable "db_user" {
+  type      = string
+  default   = "dbadmin"
+  sensitive = true
+}
+
+variable "db_pw" {
+  type      = string
+  default   = "passthebase"
+  sensitive = true
+}
