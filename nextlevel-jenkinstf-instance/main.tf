@@ -19,7 +19,7 @@ resource "aws_security_group" "jenkinstest-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -46,7 +46,7 @@ resource "aws_s3_bucket" "jenkinsbucket" {
   bucket = var.bucket
 
   tags = {
-    Name        = "Grin-bucket"
+    Name = "Grin-bucket"
   }
 }
 #basic example of S3 bucket ACL policy private bucket
@@ -63,6 +63,6 @@ resource "aws_s3_bucket_ownership_controls" "jenkinsbucketpolicyrule" {
 
 resource "aws_s3_bucket_acl" "jenkinsbucket-private" {
   depends_on = [aws_s3_bucket_ownership_controls.jenkinsbucketpolicyrule]
-  bucket = aws_s3_bucket.jenkinsbucket.id
-  acl    = var.acl 
+  bucket     = aws_s3_bucket.jenkinsbucket.id
+  acl        = var.acl
 }
