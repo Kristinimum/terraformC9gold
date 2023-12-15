@@ -18,3 +18,7 @@ variable "instance" {
     type = string
     default = "t2.micro"
 }
+
+output "mypublicip" {
+    value = aws_instance.app_server.public_ip
+}
