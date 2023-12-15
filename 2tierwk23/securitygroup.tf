@@ -42,7 +42,7 @@ resource "aws_security_group" "database_sg" {
   description = "allow inbound traffic from ALB"
   vpc_id      = aws_vpc.custom-vpc.id
 
-  #allow traffic from ALB
+ 
   ingress {
     from_port       = 3306
     to_port         = 3306
@@ -65,10 +65,10 @@ resource "aws_security_group" "database_sg" {
 #web tier security group
 resource "aws_security_group" "webtier_sg" {
   name        = "webtier_sg"
-  description = "allow inbound traffic from ALB"
+  description = "allow inbound traffic"
   vpc_id      = aws_vpc.custom-vpc.id
 
-  #allow traffic from ALB
+ 
   ingress {
     from_port       = 80
     to_port         = 80
@@ -87,3 +87,4 @@ resource "aws_security_group" "webtier_sg" {
     Name = "webtier_sg"
   }
 }
+
